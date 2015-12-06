@@ -3,11 +3,7 @@ package com.dothings.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dothings.model.QuestCompletion;
 import com.dothings.model.User;
 import com.dothings.utils.Constants;
 import com.dothings.utils.RestAPIResponse;
@@ -39,7 +34,7 @@ public class UserController extends BaseController {
                 stream.write(bytes);
                 stream.close();
                 user.setProfilePicture(fileName);
-                userRepository.save(user);
+                userService.save(user);
                 return RestAPIResponse.ok(null, "You successfully uploaded " + fileName + " into "
                         + fileName);
             } catch (Exception e) {

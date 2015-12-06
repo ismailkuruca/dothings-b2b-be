@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+	"-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+	"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+	<classPathEntry
+		location="/Development/workspace/b2b-backend/target/b2b-backend/WEB-INF/lib/mysql-connector-java-5.1.26.jar" />
+	<context id="dothings">
+
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+
+		<jdbcConnection
+			driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/b2b"
+			userId="root"
+			password="root" />
+
+		<javaModelGenerator
+			targetPackage="com.dothings.model2"
+			targetProject="/Development/workspace/b2b-backend/src/main/java" />
+
+		<sqlMapGenerator
+			targetPackage="com.dothings.sqlmapper"
+			targetProject="/Development/workspace/b2b-backend/src/main/resources" />
+
+		<javaClientGenerator targetPackage="com.dothings.client"
+			targetProject="/Development/workspace/b2b-backend/src/main/java" type="XMLMAPPER" />
+
+		<table  tableName="activity" />
+		<table tableName="announcement" />
+		<table tableName="comments" />
+		<table tableName="event" />
+		<table domainObjectName="EventCompletion" tableName="eventcompletion" />
+		<table tableName="feedback" />
+		<table tableName="happy_hour" />
+		<table tableName="health_detail" />
+		<table tableName="participant" />
+		<table tableName="poll" />
+		<table tableName="poll_answer" />
+		<table tableName="profile" />
+		<table tableName="quest" />
+		<table tableName="quest_completion" />
+		<table tableName="question" />
+		<table tableName="survey" />
+		<table tableName="team" />
+		<table tableName="team_members" />
+		<table tableName="tournament" />
+		<table tableName="user" />
+	</context>
+</generatorConfiguration>

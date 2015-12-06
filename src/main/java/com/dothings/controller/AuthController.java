@@ -15,7 +15,7 @@ import com.dothings.auth.PasswordService;
 import com.dothings.model.ErrorMessage;
 import com.dothings.model.Token;
 import com.dothings.model.User;
-import com.dothings.repository.UserRepository;
+import com.dothings.service.UserService;
 import com.dothings.utils.RestAPIResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JOSEException;
@@ -24,7 +24,7 @@ import com.nimbusds.jose.JOSEException;
 public class AuthController extends BaseController {
 
 	@Resource
-	private UserRepository userRepository;
+	private UserService userService;
 
 	public static final String CONFLICT_MSG = "There is already a %s account that belongs to you",
 			NOT_FOUND_MSG = "User not found", LOGING_ERROR_MSG = "Wrong email and/or password",
@@ -36,7 +36,7 @@ public class AuthController extends BaseController {
 	@RequestMapping(value = "/auth/login", method = RequestMethod.POST)
 	public RestAPIResponse login(@RequestBody final User user, @Context final HttpServletRequest request)
 			throws JOSEException {
-		User foundUser = userRepository.findByEmail(user.getEmail());
+		User foundUser = userService.findByEmail(user.getEmail());
 		if (foundUser != null && PasswordService.checkPassword(user.getPassword(), foundUser.getPassword())) {
 			final Token token = AuthUtils.createToken(request.getRemoteHost(), foundUser.getId());
 			return RestAPIResponse.ok(token);
@@ -46,12 +46,12 @@ public class AuthController extends BaseController {
 
 	@RequestMapping(value = "/auth/signup", method = RequestMethod.POST)
 	public RestAPIResponse signup(@RequestBody final User user, HttpServletRequest request) throws JOSEException {
-		User foundUser = userRepository.findByEmail(user.getEmail());
+		User foundUser = userService.findByEmail(user.getEmail());
 		if (foundUser != null) {
 			return RestAPIResponse.error(HttpStatus.UNAUTHORIZED, new ErrorMessage(DUPLICATE_EMAIL_ERROR));
 		}
 		user.setPassword(PasswordService.hashPassword(user.getPassword()));
-		final User savedUser = userRepository.save(user);
+		final User savedUser = userService.save(user);
 		final Token token = AuthUtils.createToken(request.getRemoteHost(), savedUser.getId());
 		return RestAPIResponse.ok(token);
 	}

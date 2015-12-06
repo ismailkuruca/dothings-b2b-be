@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.dothings.auth.AuthUtils;
 import com.dothings.init.AuthFilter;
 import com.dothings.model.User;
-import com.dothings.repository.UserRepository;
+import com.dothings.service.UserService;
 import com.nimbusds.jose.JOSEException;
 
 public class BaseController {
@@ -24,7 +24,7 @@ public class BaseController {
     HttpServletResponse response;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     public User getUser() {
         String authHeader = request.getHeader(AuthUtils.AUTH_HEADER_KEY);
@@ -40,7 +40,7 @@ public class BaseController {
 
         User findById = null;
         try {
-            findById = userRepository.findOne(Long.parseLong(AuthUtils.getSubject(authHeader)));
+            findById = userService.getUserById(Long.parseLong(AuthUtils.getSubject(authHeader)));
         } catch (NumberFormatException | ParseException | JOSEException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();

@@ -1,10 +1,10 @@
 package com.dothings.auth;
 
 import java.text.ParseException;
-
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 
 import com.dothings.model.Token;
+import com.dothings.utils.DateUtils;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -38,8 +38,8 @@ public final class AuthUtils {
 		JWTClaimsSet claim = new JWTClaimsSet();
 		claim.setSubject(Long.toString(sub));
 		claim.setIssuer(host);
-		claim.setIssueTime(DateTime.now().toDate());
-		claim.setExpirationTime(DateTime.now().plusDays(14).toDate());
+		claim.setIssueTime(DateUtils.asDate(LocalDateTime.now()));
+		claim.setExpirationTime(DateUtils.asDate(LocalDateTime.now().plusDays(14)));
 		
 		JWSSigner signer = new MACSigner(TOKEN_SECRET);
 		SignedJWT jwt = new SignedJWT(JWT_HEADER, claim);
